@@ -38,14 +38,12 @@ const updateUI = (data) => {
     // }
     time.setAttribute('src', timeSrc); 
 
+    // remove the d-none class if present 
     if(card.classList.contains('d-none')){
         card.classList.remove('d-none'); 
     }
 
 };
-
-// remove the d-none class if present 
-
 
 
 const updateCity = async (city) => {
@@ -53,7 +51,6 @@ const updateCity = async (city) => {
     const cityDeets = await getCity(city);
     const weather = await getWeather(cityDeets.Key);
  
-
     return {
         cityDeets: cityDeets,
         weather: weather
@@ -73,4 +70,12 @@ cityForm.addEventListener('submit', e => {
         .then(data => updateUI(data))
         .catch(err => console.log(err));
     
+    // set local storage 
+    localStorage.setItem('city', city); 
 });
+
+if(localStorage.getItem('city')){
+    updateCity(localStorage.getItem('city'))
+    .then(data => updateUI(data))
+    .catch(err => console.log(err)); 
+}
